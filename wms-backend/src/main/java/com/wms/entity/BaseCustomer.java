@@ -1,0 +1,38 @@
+package com.wms.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+@TableName("base_customer")
+public class BaseCustomer {
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    private String customerCode;
+
+    private String customerName;
+
+    private String contactPerson;
+
+    private String contactPhone;
+
+    private String address;
+
+    private String email;
+
+    private Integer status;
+
+    private String remark;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+
+    @TableLogic
+    private Integer deleted;
+}

@@ -1,0 +1,16 @@
+# 忽略依赖包目录（比如 node_modules，适用于前端项目）
+node_modules/
+
+# 忽略日志文件
+*.log
+
+# 忽略临时文件
+.tmp
+*.tmp
+
+# 忽略 IDE 配置文件（Trae 若生成 .idea 目录，可忽略）
+.idea/
+
+# 忽略编译后的文件（比如 dist、build 目录）
+dist/
+build/

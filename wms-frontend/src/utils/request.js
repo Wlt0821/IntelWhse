@@ -23,6 +23,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     const res = response.data
+    console.log('API响应:', response.config.url, res)
     if (res.code !== 200) {
       ElMessage.error(res.msg || '请求失败')
       if (res.code === 401) {
@@ -35,6 +36,14 @@ request.interceptors.response.use(
     return res
   },
   error => {
+    console.error('API请求失败:', error)
+    console.error('错误详情:', {
+      message: error.message,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      url: error.config?.url
+    })
     ElMessage.error(error.message || '网络错误')
     return Promise.reject(error)
   }

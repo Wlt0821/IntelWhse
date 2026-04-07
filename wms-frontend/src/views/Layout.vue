@@ -109,6 +109,7 @@
         <router-view />
       </el-main>
     </el-container>
+    <CopawChatbot />
   </el-container>
 </template>
 
@@ -117,6 +118,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getUserInfo, isAdmin, getAccessibleMenus } from '@/utils/permission'
+import CopawChatbot from '@/components/CopawChatbot.vue'
 
 const route = useRoute()
 const router = useRouter()

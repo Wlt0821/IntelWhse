@@ -31,6 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/auth/login",
                         "/home/**",
                         "/test/**",
+                        "/api/agent/**",
                         "/inbound/plan/page",
                         "/outbound/picking-task/page",
                         "/order/customer/page",

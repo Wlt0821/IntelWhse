@@ -203,10 +203,13 @@ const userInfo = computed(() => {
 
 const loadStatistics = async () => {
   try {
+    console.log('正在加载统计数据...')
     const res = await request.get('/home/statistics')
+    console.log('统计数据响应:', res)
     statistics.value = res.data
   } catch (e) {
-    console.error(e)
+    console.error('加载统计数据失败:', e)
+    console.error('错误详情:', e.response?.data || e.message)
     statistics.value = {
       customerCount: 0,
       supplierCount: 0,
@@ -218,30 +221,39 @@ const loadStatistics = async () => {
 
 const loadInventoryChart = async () => {
   try {
+    console.log('正在加载库存图表数据...')
     const res = await request.get('/home/inventory-chart')
+    console.log('库存图表数据响应:', res)
     inventoryChartData.value = res.data || []
   } catch (e) {
-    console.error(e)
+    console.error('加载库存图表失败:', e)
+    console.error('错误详情:', e.response?.data || e.message)
     inventoryChartData.value = []
   }
 }
 
 const loadInboundChart = async () => {
   try {
+    console.log('正在加载入库图表数据...')
     const res = await request.get('/home/inbound-chart')
+    console.log('入库图表数据响应:', res)
     inboundChartData.value = res.data || []
   } catch (e) {
-    console.error(e)
+    console.error('加载入库图表失败:', e)
+    console.error('错误详情:', e.response?.data || e.message)
     inboundChartData.value = []
   }
 }
 
 const loadOrderChart = async () => {
   try {
+    console.log('正在加载出库/订单图表数据...')
     const res = await request.get('/home/order-chart')
+    console.log('出库/订单图表数据响应:', res)
     orderChartData.value = res.data || []
   } catch (e) {
-    console.error(e)
+    console.error('加载出库/订单图表失败:', e)
+    console.error('错误详情:', e.response?.data || e.message)
     orderChartData.value = []
   }
 }

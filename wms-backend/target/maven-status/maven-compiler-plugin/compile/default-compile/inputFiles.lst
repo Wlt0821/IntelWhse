@@ -61,6 +61,7 @@ D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseLocation.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseZone.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\PickingPlanMapper.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\CustomerOrderDetailMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\AuthService.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\dto\LoginDTO.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\CustomerOrderDetail.java

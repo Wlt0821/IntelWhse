@@ -91,6 +91,10 @@
             </template>
             <el-menu-item index="/stocktake/stocktake-manage" v-if="hasMenuAccess('STOCKTAKE_MANAGE')">盘点管理</el-menu-item>
           </el-sub-menu>
+          <el-menu-item index="/drone-monitor">
+            <el-icon><Monitor /></el-icon>
+            <span>无人机监控</span>
+          </el-menu-item>
           <el-menu-item index="/query/data-query" v-if="hasMenuAccess('DATA_QUERY')">
             <el-icon><DataAnalysis /></el-icon>
             <span>数据查询</span>

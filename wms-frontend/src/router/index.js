@@ -118,6 +118,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'drone-monitor',
+        name: 'DroneMonitor',
+        component: () => import('@/views/DroneMonitor.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'query/data-query',
         name: 'DataQuery',
         component: () => import('@/views/query/DataQuery.vue'),

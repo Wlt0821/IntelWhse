@@ -25,7 +25,13 @@ public class HomeController {
     private final BaseGoodsMapper baseGoodsMapper;
     private final InboundPlanMapper inboundPlanMapper;
     private final CustomerOrderMapper customerOrderMapper;
+    private final CustomerOrderDetailMapper customerOrderDetailMapper;
     private final WmsInventoryMapper wmsInventoryMapper;
+    private final InboundTaskMapper inboundTaskMapper;
+    private final PickingTaskMapper pickingTaskMapper;
+    private final PackingMapper packingMapper;
+    private final TransferPlanMapper transferPlanMapper;
+    private final CheckPlanMapper checkPlanMapper;
 
     @Operation(summary = "获取首页统计数据")
     @GetMapping("/statistics")
@@ -35,10 +41,23 @@ public class HomeController {
         Long customerCount = baseCustomerMapper.selectCount(new LambdaQueryWrapper<>());
         Long supplierCount = baseSupplierMapper.selectCount(new LambdaQueryWrapper<>());
         
+        // 业务数据：订单 + 入库
+        Long orderCount = customerOrderMapper.selectCount(new LambdaQueryWrapper<>());
+        Long inboundCount = inboundPlanMapper.selectCount(new LambdaQueryWrapper<>());
+        Long businessDataCount = orderCount + inboundCount;
+        
+        // 作业数据：入库作业 + 拣货作业 + 装箱单 + 移库 + 盘点
+        Long inboundTaskCount = inboundTaskMapper.selectCount(new LambdaQueryWrapper<>());
+        Long pickingTaskCount = pickingTaskMapper.selectCount(new LambdaQueryWrapper<>());
+        Long packingCount = packingMapper.selectCount(new LambdaQueryWrapper<>());
+        Long transferCount = transferPlanMapper.selectCount(new LambdaQueryWrapper<>());
+        Long checkCount = checkPlanMapper.selectCount(new LambdaQueryWrapper<>());
+        Long workDataCount = inboundTaskCount + pickingTaskCount + packingCount + transferCount + checkCount;
+        
         data.put("customerCount", customerCount);
         data.put("supplierCount", supplierCount);
-        data.put("businessDataCount", customerCount + supplierCount);
-        data.put("workDataCount", customerCount + supplierCount);
+        data.put("businessDataCount", businessDataCount);
+        data.put("workDataCount", workDataCount);
         
         return Result.success(data);
     }
@@ -211,5 +230,59 @@ public class HomeController {
         }
         
         return Result.success(result);
+    }
+    
+    @Operation(summary = "获取商品每日销量（全部数据）")
+    @GetMapping("/daily-sales/all")
+    public Result<List<Map<String, Object>>> getDailySalesAll() {
+        List<Map<String, Object>> result = customerOrderDetailMapper.getDailySales();
+        return Result.success(result);
+    }
+    
+    @Operation(summary = "获取商品每日销量（按日期范围）")
+    @GetMapping("/daily-sales/range")
+    public Result<List<Map<String, Object>>> getDailySalesByRange(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        
+        if (startDate == null || endDate == null) {
+            List<Map<String, Object>> result = customerOrderDetailMapper.getDailySales();
+            return Result.success(result);
+        }
+        
+        List<Map<String, Object>> result = customerOrderDetailMapper.getDailySalesByDateRange(startDate, endDate);
+        return Result.success(result);
+    }
+    
+    @Operation(summary = "获取商品每日销量（分页）")
+    @GetMapping("/daily-sales/page")
+    public Result<Page<Map<String, Object>>> getDailySalesPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "20") Integer pageSize,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        
+        List<Map<String, Object>> allData;
+        if (startDate == null || endDate == null) {
+            allData = customerOrderDetailMapper.getDailySales();
+        } else {
+            allData = customerOrderDetailMapper.getDailySalesByDateRange(startDate, endDate);
+        }
+        
+        int total = allData.size();
+        int start = (pageNum - 1) * pageSize;
+        int end = Math.min(start + pageSize, total);
+        
+        List<Map<String, Object>> pageData;
+        if (start >= total) {
+            pageData = new ArrayList<>();
+        } else {
+            pageData = allData.subList(start, end);
+        }
+        
+        Page<Map<String, Object>> resultPage = new Page<>(pageNum, pageSize, total);
+        resultPage.setRecords(pageData);
+        
+        return Result.success(resultPage);
     }
 }

@@ -118,6 +118,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'stocktake/stocktake-data',
+        name: 'StocktakeData',
+        component: () => import('@/views/stocktake/StocktakeData.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'drone-monitor',
         name: 'DroneMonitor',
         component: () => import('@/views/DroneMonitor.vue'),

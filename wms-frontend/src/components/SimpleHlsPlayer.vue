@@ -1,7 +1,7 @@
 <template>
   <div class="simple-hls-player">
     <div class="player-header">
-      <h3>无人机视频监控</h3>
+      <h3>智能盘点</h3>
       <div class="header-right">
         <div class="status-indicator" :class="{ active: streamStatus }">
           <span class="dot"></span>
@@ -38,7 +38,7 @@
         
         <div v-if="!streamStatus" class="placeholder">
           <el-icon><VideoCamera /></el-icon>
-          <p>点击"开始直播"连接无人机视频</p>
+          <p>点击"开始盘点"连接无人机</p>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
         @click="startStream"
       >
         <el-icon><VideoPlay /></el-icon>
-        开始直播
+        开始盘点
       </el-button>
       <el-button
         type="danger"
@@ -59,7 +59,7 @@
         @click="stopStream"
       >
         <el-icon><VideoPause /></el-icon>
-        停止直播
+        停止盘点
       </el-button>
       <el-button @click="refreshStream">
         <el-icon><Refresh /></el-icon>

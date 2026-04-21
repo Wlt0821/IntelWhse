@@ -90,10 +90,11 @@
               <span>盘点管理</span>
             </template>
             <el-menu-item index="/stocktake/stocktake-manage" v-if="hasMenuAccess('STOCKTAKE_MANAGE')">盘点管理</el-menu-item>
+            <el-menu-item index="/stocktake/stocktake-data">盘点数据</el-menu-item>
           </el-sub-menu>
           <el-menu-item index="/drone-monitor">
             <el-icon><Monitor /></el-icon>
-            <span>无人机监控</span>
+            <span>智能盘点</span>
           </el-menu-item>
           <el-menu-item index="/query/data-query" v-if="hasMenuAccess('DATA_QUERY')">
             <el-icon><DataAnalysis /></el-icon>

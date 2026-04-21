@@ -3,7 +3,7 @@
     <div class="monitor-header">
       <h2>
         <el-icon><Monitor /></el-icon>
-        无人机巡检监控
+        智能盘点
       </h2>
     </div>
 

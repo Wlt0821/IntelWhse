@@ -16,6 +16,7 @@ D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\C
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseGoods.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\annotation\OperLog.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\common\Result.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\dto\InventoryUploadDTO.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\SysUserMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\AuthController.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\InboundTask.java
@@ -24,6 +25,7 @@ D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\HomeController.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\ReplenishmentPlanController.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\config\WebMvcConfig.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\InventoryRecordController.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseContainer.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\TestData.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\BaseCustomerController.java
@@ -54,12 +56,14 @@ D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controll
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\BaseCustomerMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\BaseLocationService.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseCustomer.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\InventoryRecord.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\PickingTaskService.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\controller\TestController.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\InboundTaskMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\BaseContainerService.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseLocation.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\BaseZone.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\InventoryRecordMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\PickingPlanMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\CustomerOrderDetailMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\AuthService.java
@@ -74,6 +78,7 @@ D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\W
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\TransferPlanMapper.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\exception\GlobalExceptionHandler.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\mapper\CustomerOrderMapper.java
+D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\InventoryRecordService.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\entity\WmsInventory.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\interceptor\JwtInterceptor.java
 D:\TraeProject\IntelligentWarehousing\wms-backend\src\main\java\com\wms\service\BaseCustomerService.java

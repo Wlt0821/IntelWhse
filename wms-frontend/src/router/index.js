@@ -124,6 +124,12 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
+        path: 'inventory/realtime',
+        name: 'InventoryRealtime',
+        component: () => import('@/views/inventory/InventoryRealtime.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
         path: 'drone-monitor',
         name: 'DroneMonitor',
         component: () => import('@/views/DroneMonitor.vue'),

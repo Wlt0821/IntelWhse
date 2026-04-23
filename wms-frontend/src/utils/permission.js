@@ -16,6 +16,8 @@ const menuRouteMap = {
   'REPLENISH_MANAGE': '/replenish/replenish-manage',
   'TRANSFER_MANAGE': '/transfer/transfer-manage',
   'STOCKTAKE_MANAGE': '/stocktake/stocktake-manage',
+  'STOCKTAKE_DATA': '/stocktake/stocktake-data',
+  'INVENTORY_REALTIME': '/inventory/realtime',
   'DATA_QUERY': '/query/data-query',
   'USER': '/system/user',
   'ROLE': '/system/role',

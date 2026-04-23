@@ -1,5 +1,0 @@
-{
-  "port": 8085,
-  "streamUrl": "http://127.0.0.1:8889/live/test/",
-  "outputDir": "D:\\TraeProject\\IntelligentWarehousing\\stream-output"
-}

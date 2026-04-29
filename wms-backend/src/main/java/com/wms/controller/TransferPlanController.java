@@ -3,6 +3,7 @@ package com.wms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
+import com.wms.dto.TransferPlanVO;
 import com.wms.entity.TransferPlan;
 import com.wms.service.TransferPlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,12 +21,12 @@ public class TransferPlanController {
 
     @Operation(summary = "分页查询移库计划列表")
     @GetMapping("/page")
-    public Result<Page<TransferPlan>> page(
+    public Result<Page<TransferPlanVO>> page(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String planNo,
             @RequestParam(required = false) String status) {
-        Page<TransferPlan> page = transferPlanService.page(pageNum, pageSize, planNo, status);
+        Page<TransferPlanVO> page = transferPlanService.page(pageNum, pageSize, planNo, status);
         return Result.success(page);
     }
 

@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "客户管理")
 @RestController
 @RequestMapping("/base/customer")
@@ -17,6 +20,23 @@ import org.springframework.web.bind.annotation.*;
 public class BaseCustomerController {
 
     private final BaseCustomerService baseCustomerService;
+
+    @Operation(summary = "获取所有客户列表（不分页）")
+    @GetMapping("/all")
+    public Result<List<BaseCustomer>> getAll(
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) Integer status) {
+        LambdaQueryWrapper<BaseCustomer> wrapper = new LambdaQueryWrapper<>();
+        if (customerName != null && !customerName.isEmpty()) {
+            wrapper.like(BaseCustomer::getCustomerName, customerName);
+        }
+        if (status != null) {
+            wrapper.eq(BaseCustomer::getStatus, status);
+        }
+        wrapper.orderByDesc(BaseCustomer::getCreateTime);
+        List<BaseCustomer> list = baseCustomerService.list(wrapper);
+        return Result.success(list);
+    }
 
     @Operation(summary = "分页查询客户列表")
     @GetMapping("/page")

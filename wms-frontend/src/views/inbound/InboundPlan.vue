@@ -8,46 +8,48 @@
       </template>
       
       <div class="search-bar">
-        <el-form :inline="true" :model="searchForm">
-          <el-form-item label="计划编号">
-            <el-input v-model="searchForm.planNo" placeholder="请输入计划编号" clearable />
-          </el-form-item>
-          <el-form-item label="状态">
-            <div class="custom-select-wrapper">
-              <el-select 
-                v-model="statusValue" 
-                placeholder="请选择状态" 
-                clearable
-                style="min-width: 150px;"
-              >
-                <el-option label="草稿" value="DRAFT" />
-                <el-option label="待审核" value="PENDING" />
-                <el-option label="已审核" value="APPROVED" />
-                <el-option label="处理中" value="PROCESSING" />
-                <el-option label="已完成" value="COMPLETED" />
-                <el-option label="已取消" value="CANCELLED" />
-              </el-select>
-              <div v-if="statusValue" class="custom-display">
-                {{ getStatusLabel(statusValue) }}
-              </div>
-            </div>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="loadData">查询</el-button>
-            <el-button @click="resetSearch">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <el-button type="primary" @click="handleAdd">新增计划</el-button>
-      </div>
+    <el-form :inline="true" :model="searchForm">
+      <el-form-item label="计划编号">
+        <el-input v-model="searchForm.planNo" placeholder="请输入计划编号" clearable />
+      </el-form-item>
+      <el-form-item label="状态">
+        <div class="custom-select-wrapper">
+          <el-select 
+            v-model="statusValue" 
+            placeholder="请选择状态" 
+            clearable
+            style="min-width: 150px;"
+            @change="handleStatusChange"
+            @clear="handleStatusClear"
+          >
+            <el-option label="草稿" value="DRAFT" />
+            <el-option label="待审核" value="PENDING" />
+            <el-option label="已审核" value="APPROVED" />
+            <el-option label="处理中" value="PROCESSING" />
+            <el-option label="已完成" value="COMPLETED" />
+            <el-option label="已取消" value="CANCELLED" />
+          </el-select>
+          <div v-if="statusValue" class="custom-display">
+            {{ getStatusLabel(statusValue) }}
+          </div>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="loadData">查询</el-button>
+        <el-button @click="resetSearch">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-button type="primary" @click="handleAdd">新增计划</el-button>
+  </div>
 
-      <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="planNo" label="计划编号" width="180" />
-        <el-table-column prop="supplierId" label="供应商ID" width="120" />
-        <el-table-column prop="planType" label="计划类型" width="120">
-          <template #default="{ row }">
-            <el-tag v-if="row.planType">{{ row.planType }}</el-tag>
-          </template>
-        </el-table-column>
+  <el-table :data="tableData" border style="width: 100%">
+    <el-table-column prop="planNo" label="计划编号" width="180" />
+    <el-table-column prop="supplierName" label="供应商" width="180" />
+    <el-table-column prop="planType" label="计划类型" width="120">
+      <template #default="{ row }">
+        <el-tag v-if="row.planType">{{ row.planType }}</el-tag>
+      </template>
+    </el-table-column>
         <el-table-column prop="planDate" label="计划日期" width="180">
           <template #default="{ row }">
             {{ row.planDate ? formatDate(row.planDate) : '-' }}
@@ -92,8 +94,10 @@
         <el-form-item label="计划编号" prop="planNo">
           <el-input v-model="form.planNo" placeholder="请输入计划编号" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="供应商ID" prop="supplierId">
-          <el-input-number v-model="form.supplierId" :min="1" />
+        <el-form-item label="供应商" prop="supplierId">
+          <el-select v-model="form.supplierId" placeholder="请选择供应商" style="width: 100%;">
+            <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="计划类型" prop="planType">
           <el-select v-model="form.planType" placeholder="请选择计划类型">
@@ -149,6 +153,7 @@ const isEdit = ref(false)
 const dialogTitle = ref('')
 const tableData = ref([])
 const total = ref(0)
+const supplierList = ref([])
 
 const form = reactive({
   id: null,
@@ -207,6 +212,16 @@ const getStatusLabel = (value) => {
   return map[value] || ''
 }
 
+const loadSuppliers = async () => {
+  try {
+    const res = await request.get('/base/supplier/all', { params: { status: 1 } })
+    supplierList.value = res.data || []
+  } catch (e) {
+    console.error('加载供应商失败', e)
+    supplierList.value = []
+  }
+}
+
 const loadData = async () => {
   try {
     const params = { ...searchForm }
@@ -241,6 +256,7 @@ const handleAdd = () => {
     status: 'DRAFT',
     remark: ''
   })
+  loadSuppliers()
   dialogVisible.value = true
 }
 
@@ -248,6 +264,7 @@ const handleEdit = (row) => {
   isEdit.value = true
   dialogTitle.value = '编辑入库计划'
   Object.assign(form, row)
+  loadSuppliers()
   dialogVisible.value = true
 }
 
@@ -287,6 +304,7 @@ const handleDelete = async (row) => {
 
 onMounted(() => {
   loadData()
+  loadSuppliers()
 })
 </script>
 

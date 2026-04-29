@@ -154,6 +154,12 @@ const routes = [
         meta: { requiresAuth: true, requiresAdmin: true }
       }
     ]
+  },
+  {
+    path: '/screen',
+    name: 'DashboardScreen',
+    component: () => import('@/views/dashboard/DashboardScreen.vue'),
+    meta: { requiresAuth: true, fullscreen: true }
   }
 ]
 
@@ -163,10 +169,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
+  let token = localStorage.getItem('token')
+  
+  if (to.query.t && !token) {
+    token = to.query.t
+    localStorage.setItem('token', token)
+  }
   
   if (to.meta.requiresAuth && !token) {
     next('/login')
+  } else if (to.meta.fullscreen) {
+    next()
   } else if (to.meta.requiresAdmin && !isAdmin()) {
     next('/home')
   } else if (to.path !== '/login' && to.path !== '/home' && !isAdmin() && !canAccessRoute(to.path)) {

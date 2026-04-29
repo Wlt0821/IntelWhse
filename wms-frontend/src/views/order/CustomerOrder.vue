@@ -41,7 +41,7 @@
 
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="orderNo" label="订单编号" width="180" />
-        <el-table-column prop="customerId" label="客户ID" width="120" />
+        <el-table-column prop="customerName" label="客户" width="180" />
         <el-table-column prop="orderType" label="订单类型" width="120" />
         <el-table-column prop="orderDate" label="订单日期" width="180">
           <template #default="{ row }">
@@ -87,8 +87,10 @@
         <el-form-item label="订单编号" prop="orderNo">
           <el-input v-model="form.orderNo" placeholder="请输入订单编号" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="客户ID" prop="customerId">
-          <el-input-number v-model="form.customerId" :min="1" />
+        <el-form-item label="客户" prop="customerId">
+          <el-select v-model="form.customerId" placeholder="请选择客户" style="width: 100%;">
+            <el-option v-for="item in customerList" :key="item.id" :label="item.customerName" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="订单类型" prop="orderType">
           <el-select v-model="form.orderType" placeholder="请选择订单类型">
@@ -149,6 +151,7 @@ const isEdit = ref(false)
 const dialogTitle = ref('')
 const tableData = ref([])
 const total = ref(0)
+const customerList = ref([])
 
 const form = reactive({
   id: null,
@@ -207,6 +210,16 @@ const getStatusLabel = (value) => {
   return map[value] || ''
 }
 
+const loadCustomers = async () => {
+  try {
+    const res = await request.get('/base/customer/all', { params: { status: 1 } })
+    customerList.value = res.data || []
+  } catch (e) {
+    console.error('加载客户失败', e)
+    customerList.value = []
+  }
+}
+
 const loadData = async () => {
   try {
     const params = { ...searchForm }
@@ -243,6 +256,7 @@ const handleAdd = () => {
     status: 'DRAFT',
     remark: ''
   })
+  loadCustomers()
   dialogVisible.value = true
 }
 
@@ -250,6 +264,7 @@ const handleEdit = (row) => {
   isEdit.value = true
   dialogTitle.value = '编辑客户订单'
   Object.assign(form, row)
+  loadCustomers()
   dialogVisible.value = true
 }
 
@@ -289,6 +304,7 @@ const handleDelete = async (row) => {
 
 onMounted(() => {
   loadData()
+  loadCustomers()
 })
 </script>
 

@@ -25,9 +25,10 @@
           </div>
 
           <el-table :data="inventoryTableData" border style="width: 100%">
-            <el-table-column prop="goodsId" label="商品ID" width="100" />
             <el-table-column prop="goodsName" label="商品名称" width="180" />
-            <el-table-column prop="locationId" label="仓位ID" width="100" />
+            <el-table-column prop="goodsCode" label="商品编码" width="150" />
+            <el-table-column prop="locationName" label="仓位名称" width="150" />
+            <el-table-column prop="locationCode" label="仓位编码" width="120" />
             <el-table-column prop="quantity" label="库存数量" width="120" />
             <el-table-column prop="lockedQuantity" label="锁定数量" width="120" />
             <el-table-column prop="availableQuantity" label="可用数量" width="120" />
@@ -164,7 +165,7 @@
 
           <el-table :data="inboundTableData" border style="width: 100%">
             <el-table-column prop="planNo" label="计划编号" width="180" />
-            <el-table-column prop="supplierId" label="供应商ID" width="120" />
+            <el-table-column prop="supplierName" label="供应商" width="180" />
             <el-table-column prop="planType" label="计划类型" width="120">
               <template #default="{ row }">
                 <el-tag v-if="row.planType">{{ row.planType }}</el-tag>
@@ -294,7 +295,7 @@
 
           <el-table :data="orderTableData" border style="width: 100%">
             <el-table-column prop="orderNo" label="订单编号" width="180" />
-            <el-table-column prop="customerId" label="客户ID" width="120" />
+            <el-table-column prop="customerName" label="客户" width="180" />
             <el-table-column prop="orderType" label="订单类型" width="120" />
             <el-table-column prop="totalQuantity" label="总数量" width="120" />
             <el-table-column prop="totalAmount" label="总金额" width="120" />

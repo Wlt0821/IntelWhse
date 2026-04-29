@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "供应商管理")
 @RestController
 @RequestMapping("/base/supplier")
@@ -17,6 +20,23 @@ import org.springframework.web.bind.annotation.*;
 public class BaseSupplierController {
 
     private final BaseSupplierService baseSupplierService;
+
+    @Operation(summary = "获取所有供应商列表（不分页）")
+    @GetMapping("/all")
+    public Result<List<BaseSupplier>> getAll(
+            @RequestParam(required = false) String supplierName,
+            @RequestParam(required = false) Integer status) {
+        LambdaQueryWrapper<BaseSupplier> wrapper = new LambdaQueryWrapper<>();
+        if (supplierName != null && !supplierName.isEmpty()) {
+            wrapper.like(BaseSupplier::getSupplierName, supplierName);
+        }
+        if (status != null) {
+            wrapper.eq(BaseSupplier::getStatus, status);
+        }
+        wrapper.orderByDesc(BaseSupplier::getCreateTime);
+        List<BaseSupplier> list = baseSupplierService.list(wrapper);
+        return Result.success(list);
+    }
 
     @Operation(summary = "分页查询供应商列表")
     @GetMapping("/page")

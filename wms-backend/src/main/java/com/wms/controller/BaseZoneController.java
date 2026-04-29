@@ -1,5 +1,6 @@
 package com.wms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "库区管理")
 @RestController
 @RequestMapping("/base/zone")
@@ -17,6 +20,23 @@ import org.springframework.web.bind.annotation.*;
 public class BaseZoneController {
 
     private final BaseZoneService baseZoneService;
+
+    @Operation(summary = "获取所有库区列表（不分页）")
+    @GetMapping("/all")
+    public Result<List<BaseZone>> getAll(
+            @RequestParam(required = false) String zoneName,
+            @RequestParam(required = false) Integer status) {
+        LambdaQueryWrapper<BaseZone> wrapper = new LambdaQueryWrapper<>();
+        if (zoneName != null && !zoneName.isEmpty()) {
+            wrapper.like(BaseZone::getZoneName, zoneName);
+        }
+        if (status != null) {
+            wrapper.eq(BaseZone::getStatus, status);
+        }
+        wrapper.orderByDesc(BaseZone::getCreateTime);
+        List<BaseZone> list = baseZoneService.list(wrapper);
+        return Result.success(list);
+    }
 
     @Operation(summary = "分页查询库区列表")
     @GetMapping("/page")

@@ -23,6 +23,7 @@ public class HomeController {
     private final BaseCustomerMapper baseCustomerMapper;
     private final BaseSupplierMapper baseSupplierMapper;
     private final BaseGoodsMapper baseGoodsMapper;
+    private final BaseLocationMapper baseLocationMapper;
     private final InboundPlanMapper inboundPlanMapper;
     private final CustomerOrderMapper customerOrderMapper;
     private final CustomerOrderDetailMapper customerOrderDetailMapper;
@@ -162,6 +163,14 @@ public class HomeController {
         List<BaseGoods> goodsList = baseGoodsMapper.selectList(new LambdaQueryWrapper<>());
         Map<Long, String> goodsNameMap = goodsList.stream()
                 .collect(Collectors.toMap(BaseGoods::getId, BaseGoods::getGoodsName));
+        Map<Long, String> goodsCodeMap = goodsList.stream()
+                .collect(Collectors.toMap(BaseGoods::getId, BaseGoods::getGoodsCode));
+        
+        List<BaseLocation> locationList = baseLocationMapper.selectList(new LambdaQueryWrapper<>());
+        Map<Long, String> locationNameMap = locationList.stream()
+                .collect(Collectors.toMap(BaseLocation::getId, BaseLocation::getLocationName));
+        Map<Long, String> locationCodeMap = locationList.stream()
+                .collect(Collectors.toMap(BaseLocation::getId, BaseLocation::getLocationCode));
         
         Page<Map<String, Object>> resultPage = new Page<>(pageNum, pageSize, inventoryPage.getTotal());
         List<Map<String, Object>> records = new ArrayList<>();
@@ -171,7 +180,10 @@ public class HomeController {
             item.put("id", inventory.getId());
             item.put("goodsId", inventory.getGoodsId());
             item.put("goodsName", goodsNameMap.getOrDefault(inventory.getGoodsId(), ""));
+            item.put("goodsCode", goodsCodeMap.getOrDefault(inventory.getGoodsId(), ""));
             item.put("locationId", inventory.getLocationId());
+            item.put("locationName", locationNameMap.getOrDefault(inventory.getLocationId(), ""));
+            item.put("locationCode", locationCodeMap.getOrDefault(inventory.getLocationId(), ""));
             item.put("quantity", inventory.getQuantity());
             item.put("lockedQuantity", inventory.getLockedQuantity());
             item.put("availableQuantity", inventory.getAvailableQuantity());

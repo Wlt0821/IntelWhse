@@ -8,11 +8,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BaseLocationService {
 
     private final BaseLocationMapper baseLocationMapper;
+
+    public List<BaseLocation> list(LambdaQueryWrapper<BaseLocation> wrapper) {
+        return baseLocationMapper.selectList(wrapper);
+    }
 
     public Page<BaseLocation> page(Integer pageNum, Integer pageSize, String locationName, Integer status) {
         Page<BaseLocation> page = new Page<>(pageNum, pageSize);

@@ -63,9 +63,9 @@
             <el-tag>{{ getCheckTypeText(row.checkType) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="zoneId" label="库区ID" width="120" />
-        <el-table-column prop="locationId" label="仓位ID" width="120" />
-        <el-table-column prop="goodsId" label="商品ID" width="120" />
+        <el-table-column prop="zoneName" label="库区" width="180" />
+        <el-table-column prop="locationName" label="仓位" width="180" />
+        <el-table-column prop="goodsName" label="商品" width="180" />
         <el-table-column prop="status" label="状态" width="120">
           <template #default="{ row }">
             <el-tag :type="getStatusType(row.status)">
@@ -110,22 +110,28 @@
             <el-option label="循环盘点" value="CYCLE" />
           </el-select>
         </el-form-item>
-        <el-form-item label="库区ID" prop="zoneId">
-          <el-input-number v-model="form.zoneId" :min="1" />
+        <el-form-item label="库区" prop="zoneId">
+          <el-select v-model="form.zoneId" placeholder="请选择库区" style="width: 100%;" clearable>
+            <el-option v-for="item in zoneList" :key="item.id" :label="item.zoneName" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="仓位ID" prop="locationId">
-          <el-input-number v-model="form.locationId" :min="1" />
+        <el-form-item label="仓位" prop="locationId">
+          <el-select v-model="form.locationId" placeholder="请选择仓位" style="width: 100%;" clearable>
+            <el-option v-for="item in locationList" :key="item.id" :label="item.locationName" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="商品ID" prop="goodsId">
-          <el-input-number v-model="form.goodsId" :min="1" />
+        <el-form-item label="商品" prop="goodsId">
+          <el-select v-model="form.goodsId" placeholder="请选择商品" style="width: 100%;" clearable>
+            <el-option v-for="item in goodsList" :key="item.id" :label="item.goodsName" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
-            <el-radio label="DRAFT">草稿</el-radio>
-            <el-radio label="PENDING">待执行</el-radio>
-            <el-radio label="PROCESSING">执行中</el-radio>
-            <el-radio label="COMPLETED">已完成</el-radio>
-            <el-radio label="CANCELLED">已取消</el-radio>
+            <el-radio value="DRAFT">草稿</el-radio>
+            <el-radio value="PENDING">待执行</el-radio>
+            <el-radio value="PROCESSING">执行中</el-radio>
+            <el-radio value="COMPLETED">已完成</el-radio>
+            <el-radio value="CANCELLED">已取消</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -157,6 +163,9 @@ const isEdit = ref(false)
 const dialogTitle = ref('')
 const tableData = ref([])
 const total = ref(0)
+const zoneList = ref([])
+const locationList = ref([])
+const goodsList = ref([])
 
 const form = reactive({
   id: null,
@@ -230,9 +239,44 @@ const getStatusLabel = (value) => {
   return map[value] || ''
 }
 
+const loadZones = async () => {
+  try {
+    const res = await request.get('/base/zone/all', { params: { status: 1 } })
+    zoneList.value = res.data || []
+  } catch (e) {
+    console.error('加载库区失败', e)
+    zoneList.value = []
+  }
+}
+
+const loadLocations = async () => {
+  try {
+    const res = await request.get('/base/location/all', { params: { status: 1 } })
+    locationList.value = res.data || []
+  } catch (e) {
+    console.error('加载仓位失败', e)
+    locationList.value = []
+  }
+}
+
+const loadGoods = async () => {
+  try {
+    const res = await request.get('/base/goods/all', { params: { status: 1 } })
+    goodsList.value = res.data || []
+  } catch (e) {
+    console.error('加载商品失败', e)
+    goodsList.value = []
+  }
+}
+
 const loadData = async () => {
   try {
-    const params = { ...searchForm }
+    const params = { }
+    params.pageNum = searchForm.pageNum || 1
+    params.pageSize = searchForm.pageSize || 10
+    if (searchForm.planNo && searchForm.planNo.trim()) {
+      params.planNo = searchForm.planNo.trim()
+    }
     if (checkTypeValue.value) {
       params.checkType = checkTypeValue.value
     }
@@ -240,10 +284,12 @@ const loadData = async () => {
       params.status = statusValue.value
     }
     const res = await request.get('/stocktake/plan/page', { params })
-    tableData.value = res.data.records
-    total.value = res.data.total
+    tableData.value = res.data.records || []
+    total.value = res.data.total || 0
   } catch (e) {
     console.error(e)
+    tableData.value = []
+    total.value = 0
   }
 }
 
@@ -267,6 +313,9 @@ const handleAdd = () => {
     goodsId: null,
     status: 'DRAFT'
   })
+  loadZones()
+  loadLocations()
+  loadGoods()
   dialogVisible.value = true
 }
 
@@ -274,6 +323,9 @@ const handleEdit = (row) => {
   isEdit.value = true
   dialogTitle.value = '编辑盘点计划'
   Object.assign(form, row)
+  loadZones()
+  loadLocations()
+  loadGoods()
   dialogVisible.value = true
 }
 
@@ -313,6 +365,9 @@ const handleDelete = async (row) => {
 
 onMounted(() => {
   loadData()
+  loadZones()
+  loadLocations()
+  loadGoods()
 })
 </script>
 
@@ -334,14 +389,7 @@ onMounted(() => {
 
 .custom-select-wrapper {
   position: relative;
-}
-
-.custom-select-wrapper :deep(.el-select__wrapper) {
-  color: transparent;
-}
-
-.custom-select-wrapper :deep(.el-select__selected-item) {
-  color: transparent;
+  display: inline-block;
 }
 
 .custom-display {
@@ -351,7 +399,7 @@ onMounted(() => {
   right: 30px;
   height: 32px;
   line-height: 32px;
-  color: #606266;
+  color: var(--cyber-text);
   font-size: 14px;
   pointer-events: none;
   z-index: 10;

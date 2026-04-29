@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
+import com.wms.dto.InventoryComparisonVO;
 import com.wms.dto.InventoryUploadDTO;
 import com.wms.entity.InventoryRecord;
 import com.wms.service.InventoryRecordService;
@@ -23,6 +24,22 @@ import java.util.List;
 public class InventoryRecordController {
 
     private final InventoryRecordService inventoryRecordService;
+
+    @Operation(summary = "获取库存对比数据（分页）")
+    @GetMapping("/comparison/page")
+    public Result<Page<InventoryComparisonVO>> getComparisonPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<InventoryComparisonVO> page = inventoryRecordService.getInventoryComparisonPage(pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    @Operation(summary = "获取库存对比数据（全部）")
+    @GetMapping("/comparison")
+    public Result<List<InventoryComparisonVO>> getComparison() {
+        List<InventoryComparisonVO> list = inventoryRecordService.getInventoryComparison();
+        return Result.success(list);
+    }
 
     @Operation(summary = "分页查询盘点记录列表")
     @GetMapping("/page")

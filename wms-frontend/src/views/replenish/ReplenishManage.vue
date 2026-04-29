@@ -42,9 +42,9 @@
 
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="planNo" label="计划编号" width="180" />
-        <el-table-column prop="goodsId" label="商品ID" width="120" />
-        <el-table-column prop="sourceLocationId" label="源仓位ID" width="120" />
-        <el-table-column prop="targetLocationId" label="目标仓位ID" width="120" />
+        <el-table-column prop="goodsName" label="商品名称" width="150" />
+        <el-table-column prop="sourceLocationName" label="源仓位" width="150" />
+        <el-table-column prop="targetLocationName" label="目标仓位" width="150" />
         <el-table-column prop="quantity" label="补货数量" width="120" />
         <el-table-column prop="triggerReason" label="触发原因" />
         <el-table-column prop="status" label="状态" width="120">
@@ -84,17 +84,23 @@
         <el-form-item label="计划编号" prop="planNo">
           <el-input v-model="form.planNo" placeholder="请输入计划编号" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="商品ID" prop="goodsId">
-          <el-input-number v-model="form.goodsId" :min="1" />
+        <el-form-item label="商品" prop="goodsId">
+          <el-select v-model="form.goodsId" placeholder="请选择商品" style="width: 100%;">
+            <el-option v-for="item in goodsList" :key="item.id" :label="item.goodsName" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="源仓位ID" prop="sourceLocationId">
-          <el-input-number v-model="form.sourceLocationId" :min="1" />
+        <el-form-item label="源仓位" prop="sourceLocationId">
+          <el-select v-model="form.sourceLocationId" placeholder="请选择源仓位" style="width: 100%;">
+            <el-option v-for="item in locationList" :key="item.id" :label="item.locationName" :value="item.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="目标仓位ID" prop="targetLocationId">
-          <el-input-number v-model="form.targetLocationId" :min="1" />
+        <el-form-item label="目标仓位" prop="targetLocationId">
+          <el-select v-model="form.targetLocationId" placeholder="请选择目标仓位" style="width: 100%;">
+            <el-option v-for="item in locationList" :key="item.id" :label="item.locationName" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="补货数量" prop="quantity">
-          <el-input-number v-model="form.quantity" :min="0" :precision="2" />
+          <el-input-number v-model="form.quantity" :min="0" :precision="2" style="width: 100%;" />
         </el-form-item>
         <el-form-item label="触发原因" prop="triggerReason">
           <el-input v-model="form.triggerReason" placeholder="请输入触发原因" type="textarea" />
@@ -136,6 +142,8 @@ const isEdit = ref(false)
 const dialogTitle = ref('')
 const tableData = ref([])
 const total = ref(0)
+const goodsList = ref([])
+const locationList = ref([])
 
 const form = reactive({
   id: null,
@@ -196,6 +204,26 @@ const handleStatusClear = () => {
   searchForm.status = undefined
 }
 
+const loadGoods = async () => {
+  try {
+    const res = await request.get('/base/goods/all', { params: { status: 1 } })
+    goodsList.value = res.data || []
+  } catch (e) {
+    console.error('加载商品失败', e)
+    goodsList.value = []
+  }
+}
+
+const loadLocations = async () => {
+  try {
+    const res = await request.get('/base/location/all', { params: { status: 1 } })
+    locationList.value = res.data || []
+  } catch (e) {
+    console.error('加载仓位失败', e)
+    locationList.value = []
+  }
+}
+
 const loadData = async () => {
   try {
     const res = await request.get('/replenish/plan/page', { params: searchForm })
@@ -227,6 +255,8 @@ const handleAdd = () => {
     triggerReason: '',
     status: 'PENDING'
   })
+  loadGoods()
+  loadLocations()
   dialogVisible.value = true
 }
 
@@ -234,6 +264,8 @@ const handleEdit = (row) => {
   isEdit.value = true
   dialogTitle.value = '编辑补货计划'
   Object.assign(form, row)
+  loadGoods()
+  loadLocations()
   dialogVisible.value = true
 }
 
@@ -273,6 +305,8 @@ const handleDelete = async (row) => {
 
 onMounted(() => {
   loadData()
+  loadGoods()
+  loadLocations()
 })
 </script>
 

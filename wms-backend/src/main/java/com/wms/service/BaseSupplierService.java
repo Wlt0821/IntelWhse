@@ -8,11 +8,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BaseSupplierService {
 
     private final BaseSupplierMapper baseSupplierMapper;
+
+    public List<BaseSupplier> list(LambdaQueryWrapper<BaseSupplier> wrapper) {
+        return baseSupplierMapper.selectList(wrapper);
+    }
 
     public Page<BaseSupplier> page(Integer pageNum, Integer pageSize, String supplierName, Integer status) {
         Page<BaseSupplier> page = new Page<>(pageNum, pageSize);

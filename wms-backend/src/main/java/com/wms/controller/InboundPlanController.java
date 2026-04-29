@@ -3,6 +3,7 @@ package com.wms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
+import com.wms.dto.InboundPlanVO;
 import com.wms.entity.InboundPlan;
 import com.wms.service.InboundPlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,12 +21,12 @@ public class InboundPlanController {
 
     @Operation(summary = "分页查询入库计划列表")
     @GetMapping("/page")
-    public Result<Page<InboundPlan>> page(
+    public Result<Page<InboundPlanVO>> page(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String planNo,
             @RequestParam(required = false) String status) {
-        Page<InboundPlan> page = inboundPlanService.page(pageNum, pageSize, planNo, status);
+        Page<InboundPlanVO> page = inboundPlanService.page(pageNum, pageSize, planNo, status);
         return Result.success(page);
     }
 

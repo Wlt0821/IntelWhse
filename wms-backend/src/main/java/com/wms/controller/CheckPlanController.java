@@ -3,6 +3,7 @@ package com.wms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
+import com.wms.dto.CheckPlanVO;
 import com.wms.entity.CheckPlan;
 import com.wms.service.CheckPlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,12 +21,12 @@ public class CheckPlanController {
 
     @Operation(summary = "分页查询盘点计划列表")
     @GetMapping("/page")
-    public Result<Page<CheckPlan>> page(
+    public Result<Page<CheckPlanVO>> page(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String planNo,
             @RequestParam(required = false) String status) {
-        Page<CheckPlan> page = checkPlanService.page(pageNum, pageSize, planNo, status);
+        Page<CheckPlanVO> page = checkPlanService.page(pageNum, pageSize, planNo, status);
         return Result.success(page);
     }
 

@@ -3,6 +3,7 @@ package com.wms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.annotation.OperLog;
 import com.wms.common.Result;
+import com.wms.dto.CustomerOrderVO;
 import com.wms.entity.CustomerOrder;
 import com.wms.service.CustomerOrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,12 +21,12 @@ public class CustomerOrderController {
 
     @Operation(summary = "分页查询客户订单列表")
     @GetMapping("/page")
-    public Result<Page<CustomerOrder>> page(
+    public Result<Page<CustomerOrderVO>> page(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String orderNo,
             @RequestParam(required = false) String status) {
-        Page<CustomerOrder> page = customerOrderService.page(pageNum, pageSize, orderNo, status);
+        Page<CustomerOrderVO> page = customerOrderService.page(pageNum, pageSize, orderNo, status);
         return Result.success(page);
     }
 

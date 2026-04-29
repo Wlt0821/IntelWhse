@@ -8,11 +8,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BaseZoneService {
 
     private final BaseZoneMapper baseZoneMapper;
+
+    public List<BaseZone> list(LambdaQueryWrapper<BaseZone> wrapper) {
+        return baseZoneMapper.selectList(wrapper);
+    }
 
     public Page<BaseZone> page(Integer pageNum, Integer pageSize, String zoneName, Integer status) {
         Page<BaseZone> page = new Page<>(pageNum, pageSize);
